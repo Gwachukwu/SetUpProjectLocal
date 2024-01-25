@@ -7,11 +7,13 @@ namespace MyApp.Namespace
     [ApiController]
     public class TestController : ControllerBase
     {
-        public string TestMethod(){
-             return "Testing";
+        public string TestMethod()
+        {
+            return "Testing";
         }
 
-        public string Get(){
+        public string Get()
+        {
             return "Get Method";
         }
     }
