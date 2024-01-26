@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using UtilityLibraries;
 
 namespace MyApp.Namespace
 {
@@ -7,9 +8,9 @@ namespace MyApp.Namespace
     [ApiController]
     public class TestController : ControllerBase
     {
-        public string TestMethod()
+        public bool TestMethod([FromQuery]string param="World")
         {
-            return "Testing";
+            return param.StartsWithUpper();
         }
 
         public string Get()
