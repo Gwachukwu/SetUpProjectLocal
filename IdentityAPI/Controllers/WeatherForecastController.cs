@@ -1,7 +1,12 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authorization;
+using IdentityAPI.Models;
+using IdentityAPI.Data;
 
 namespace IdentityAPI.Controllers;
 
+[Authorize]
 [ApiController]
 [Route("[controller]")]
 public class WeatherForecastController : ControllerBase
@@ -12,10 +17,26 @@ public class WeatherForecastController : ControllerBase
     };
 
     private readonly ILogger<WeatherForecastController> _logger;
+    private readonly AppSecurityContext _dbSec;
+    private readonly AppDataContext _dbData;
+    private readonly UserManager<AppUser> _uMan;
 
-    public WeatherForecastController(ILogger<WeatherForecastController> logger)
+    public WeatherForecastController(ILogger<WeatherForecastController> logger,
+    AppSecurityContext dbSec,
+    AppDataContext dbData
+    , UserManager<AppUser> uMan)
     {
         _logger = logger;
+        _dbSec = dbSec;
+        _dbData = dbData;
+        _uMan = uMan;
+    }
+
+    [HttpGet(Name = "GetTestString")]
+    public async Task<string> Get(string id)
+    {
+        var user = await _uMan.FindByNameAsync(User.Identity?.Name ?? String.Empty);
+        return user?.Email ?? String.Empty;
     }
 
     [HttpGet(Name = "GetWeatherForecast")]
@@ -29,4 +50,5 @@ public class WeatherForecastController : ControllerBase
         })
         .ToArray();
     }
+
 }
